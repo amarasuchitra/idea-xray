@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "taken": "2026-10-29T00:00:00+00:00",
+  "idea": "A habit tracker for remote teams with Slack nudges",
+  "score": 78,
+  "products": {
+    "Hacker News: Streakly": {
+      "status": "live",
+      "url": "https://streakly.example",
+      "why": "142 points on Hacker News"
+    },
+    "Hacker News: TeamHabits, a tiny habit app": {
+      "status": "prototype",
+      "url": "https://teamhabits.example",
+      "why": "only 4 points on Hacker News"
+    },
+    "GitHub: acme/habit-tracker": {
+      "status": "live",
+      "url": "https://github.com/acme/habit-tracker",
+      "why": "2,400 stars, updated Oct 2026"
+    },
+    "GitHub: old/habithub": {
+      "status": "graveyard",
+      "url": "https://github.com/old/habithub",
+      "why": "shutdown post: \"HabitHub is shutting down\""
+    },
+    "GitHub: me/habits": {
+      "status": "prototype",
+      "url": "https://github.com/me/habits",
+      "why": "only 3 stars"
+    },
+    "App Store: Streaks": {
+      "status": "live",
+      "url": "https://apps.apple.com/app/streaks/id1",
+      "why": "51,000 ratings, updated Sep 2026"
+    },
+    "App Store: Habitron": {
+      "status": "graveyard",
+      "url": "https://apps.apple.com/app/habitron/id2",
+      "why": "no update since Jun 2022"
+    },
+    "YC directory: Habitly": {
+      "status": "graveyard",
+      "url": "https://www.ycombinator.com/companies/habitly",
+      "why": "YC lists it as Inactive (shut down), batch S21"
+    },
+    "YC directory: Ritual": {
+      "status": "live",
+      "url": "https://www.ycombinator.com/companies/ritual",
+      "why": "active, YC batch W24"
+    }
+  },
+  "gaps": {
+    "Price": 2,
+    "Missing features": 2,
+    "Platform or legal limits": 2,
+    "Reliability": 1,
+    "Other complaints": 2
+  }
+}

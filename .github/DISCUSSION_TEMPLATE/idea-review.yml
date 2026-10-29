@@ -1,0 +1,32 @@
+title: "[Idea review] "
+labels: ["idea review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share your idea and your X-ray, and get blunt feedback from other founders.
+        Be kind to people, honest about ideas. Evidence beats opinions.
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: One or two sentences. Who is it for, and what would they pay?
+    validations:
+      required: true
+  - type: textarea
+    id: xray
+    attributes:
+      label: Your X-ray report
+      description: Paste 1-xray-report.md, or the score and the top gaps.
+    validations:
+      required: true
+  - type: textarea
+    id: demand
+    attributes:
+      label: Demand test so far
+      description: Your pass mark, and the result if you have one.
+  - type: textarea
+    id: ask
+    attributes:
+      label: What feedback do you want?
+      placeholder: Would you pay for this? What's the biggest risk I'm missing? Who tried this before?

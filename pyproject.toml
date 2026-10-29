@@ -1,11 +1,11 @@
 [project]
 name = "idea-xray"
-version = "0.1.0"
+version = "0.2.0"
 description = "Check a startup idea against what already exists, what died, and what users complain about, before you build."
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.11"
-dependencies = ["httpx>=0.27,<1", "pyyaml>=6,<7"]
+dependencies = ["httpx>=0.27,<1", "pyyaml>=6,<7", "markdown>=3.6,<4"]
 
 [project.optional-dependencies]
 dev = ["pytest==8.3.4", "respx==0.22.0", "ruff==0.8.4"]

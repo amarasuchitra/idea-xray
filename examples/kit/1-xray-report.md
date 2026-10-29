@@ -1,6 +1,4 @@
-<!-- Built from the made-up test data in tests/fixtures. -->
-
-> **Sample only:** the products, links and complaints below are made-up test data, so you can see what a report looks like.
+<!-- Sample only: built from the made-up test data in tests/fixtures. -->
 
 # Idea X-ray
 
