@@ -35,7 +35,8 @@ class Product:
     users: int | None = None  # stars, ratings or points: the best usage signal the source has
     last_activity: datetime | None = None
     archived: bool = False
-    shutdown_note: str = ""  # why it died, when the source says so
+    shutdown_note: str = ""  # link to the shutdown post, when one matched
+    dead: str = ""  # the source itself says it shut down, and why
     status: Status | None = None
     why: str = ""  # the evidence behind the status
 

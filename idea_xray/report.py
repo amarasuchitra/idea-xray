@@ -2,14 +2,35 @@
 
 from __future__ import annotations
 
+from urllib.parse import quote_plus
+
 from . import PROJECT_URL
-from .models import Status, XRay
+from .models import Idea, Status, XRay
+
+# Startup graveyards without a public API: we link a search instead of scraping them.
+GRAVEYARDS = {
+    "Loot Drop": "loot-drop.io",  # 1,200+ dead startups: money burned, cause of death, rebuild plans
+    "Startups.RIP": "startups.rip",  # post-mortems for 1,700+ inactive YC companies
+    "Failory": "failory.com",  # founder interviews and the startup cemetery
+}
 
 ICON = {Status.live: "🟢", Status.prototype: "🟡", Status.graveyard: "🪦"}
 
 
 def _cell(text: str) -> str:
     return text.replace("|", "\\|").replace("\n", " ")
+
+
+def graveyard_links(idea: Idea) -> list[str]:
+    q = idea.queries()[0]
+    links = [
+        f"[{name}](https://duckduckgo.com/?q={quote_plus(f'site:{site} {q}')})" for name, site in GRAVEYARDS.items()
+    ]
+    return [
+        f"**Check the graveyards yourself:** {' · '.join(links)}. They explain *why* similar startups died. "
+        "Their write-ups are partly AI-generated, so check the facts before you rely on them.",
+        "",
+    ]
 
 
 def markdown(x: XRay) -> str:
@@ -57,6 +78,7 @@ def markdown(x: XRay) -> str:
         lines += ["**Shutdown stories to learn from:**", ""]
         lines += [f"- [{_cell(t)}]({u})" for t, u in x.shutdowns[:8]]
         lines.append("")
+    lines += graveyard_links(x.idea)
 
     lines += ["## Gaps: where existing products fall short", ""]
     if not x.gaps:

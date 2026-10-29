@@ -14,7 +14,7 @@ def load(name):
 
 @pytest.fixture
 def web():
-    """All four sources answering with recorded data."""
+    """All built-in sources answering with recorded data."""
     with respx.mock(assert_all_called=False) as mock:
 
         def hn(req):
@@ -26,6 +26,9 @@ def web():
         mock.get("https://api.github.com/search/repositories").mock(return_value=github)
         mock.get("https://itunes.apple.com/search").mock(return_value=httpx.Response(200, json=load("appstore.json")))
         mock.get("https://www.reddit.com/search.json").mock(return_value=httpx.Response(200, json=load("reddit.json")))
+        mock.get("https://yc-oss.github.io/api/companies/all.json").mock(
+            return_value=httpx.Response(200, json=load("yc.json"))
+        )
         yield mock
 
 

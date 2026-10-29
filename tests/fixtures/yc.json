@@ -1,0 +1,8 @@
+[
+  {"name": "Habitly", "one_liner": "Habit tracker for distributed teams", "long_description": "Daily check-ins in Slack.",
+   "tags": ["Productivity"], "batch": "S21", "status": "Inactive", "url": "https://www.ycombinator.com/companies/habitly"},
+  {"name": "Ritual", "one_liner": "Team habit tracker for managers", "long_description": "",
+   "tags": ["HR Tech"], "batch": "W24", "status": "Active", "url": "https://www.ycombinator.com/companies/ritual"},
+  {"name": "Airbnb", "one_liner": "Book accommodations around the world.", "long_description": "",
+   "tags": ["Travel"], "batch": "W09", "status": "Public", "url": "https://www.ycombinator.com/companies/airbnb"}
+]

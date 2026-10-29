@@ -24,7 +24,7 @@ Source = Callable[[httpx.Client, str], Found]
 
 
 def all_sources() -> dict[str, Source]:
-    from . import appstore, github, hackernews, reddit
+    from . import appstore, github, hackernews, reddit, yc
 
     return {"Hacker News": hackernews.search, "GitHub": github.search, "App Store": appstore.search,
-            "Reddit": reddit.search}  # fmt: skip
+            "Reddit": reddit.search, "YC directory": yc.search}  # fmt: skip

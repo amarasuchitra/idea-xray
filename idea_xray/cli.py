@@ -16,6 +16,7 @@ import yaml
 from . import xray
 from .models import Idea
 from .report import markdown
+from .sources import agentreach, all_sources
 
 
 def load(args: argparse.Namespace) -> Idea:
@@ -38,11 +39,18 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--file", help="idea.yaml with pitch, customer, price, keywords")
     ap.add_argument("--out", help="write the report to this Markdown file as well")
     ap.add_argument("--no-ai", action="store_true", help="use the built-in rules only, even if keys are set")
+    ap.add_argument("--reach", action="append", choices=sorted(agentreach.CHANNELS),
+                    help="also search this platform through Agent-Reach, on your own computer (repeat)")  # fmt: skip
     args = ap.parse_args(argv)
 
     idea = load(args)
+    sources = all_sources()
+    if args.reach and not agentreach.installed():
+        raise SystemExit("--reach needs Agent-Reach: pip install agent-reach && agent-reach setup")
+    for channel in args.reach or []:
+        sources[f"{agentreach.CHANNELS[channel]} (Agent-Reach)"] = agentreach.source(channel)
     with httpx.Client(timeout=20, headers={"User-Agent": "idea-xray/0.1"}, follow_redirects=True) as client:
-        report = markdown(xray.run(idea, client, use_ai=not args.no_ai))
+        report = markdown(xray.run(idea, client, sources=sources, use_ai=not args.no_ai))
     print(report)
     if args.out:
         Path(args.out).write_text(report + "\n")

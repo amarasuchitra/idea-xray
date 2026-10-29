@@ -1,3 +1,4 @@
+import json
 from datetime import UTC, datetime
 
 import httpx
@@ -11,6 +12,7 @@ from idea_xray.liveness import classify
 from idea_xray.models import Complaint, Idea, Product, Status
 from idea_xray.report import markdown
 from idea_xray.score import durability, verdict
+from idea_xray.sources import agentreach
 
 NOW = datetime(2026, 10, 29, tzinfo=UTC)
 IDEA = Idea("A habit tracker for remote teams with Slack nudges", "remote team leads", "$4 per user per month",
@@ -132,3 +134,48 @@ def test_cli_writes_the_report(web, tmp_path, capsys):
     out = tmp_path / "report.md"
     assert main(["A habit tracker for remote teams", "--keyword", "habit tracker", "--no-ai", "--out", str(out)]) == 0
     assert "Durability score" in out.read_text() and "Durability score" in capsys.readouterr().out
+
+
+def test_yc_directory_finds_dead_and_funded_competitors(web):
+    x = xr()
+    dead, alive = by_name(x, "Habitly"), by_name(x, "Ritual")
+    assert dead.status is Status.graveyard and "Inactive" in dead.why and "S21" in dead.why
+    assert alive.status is Status.live and alive.why == "active, YC batch W24"
+    assert not any(p.name == "Airbnb" for p in x.products)  # every search word must match
+    assert ("Habitly (YC S21) is no longer active", "https://www.ycombinator.com/companies/habitly") in x.shutdowns
+
+
+def test_report_links_to_the_graveyards_without_scraping_them(web):
+    body = markdown(xr())
+    for site in ("loot-drop.io", "startups.rip", "failory.com"):
+        assert f"site%3A{site}+habit+tracker" in body
+    assert "partly AI-generated" in body
+
+
+def test_agent_reach_items_become_complaints_and_shutdowns():
+    out = {"ok": True, "items": [
+        {"title": "Our team habit app is shutting down", "url": "https://x.com/a/1", "text": ""},
+        {"title": "habit trackers", "url": "https://x.com/b/2", "text": "Every team habit tracker is too expensive."},
+        {"title": "no link", "url": None, "text": "It keeps crashing."},
+    ]}  # fmt: skip
+    seen = []
+    search = agentreach.source("twitter", runner=lambda args: seen.append(args) or json.dumps(out))
+    found = search(None, "habit tracker")
+    assert seen == [["twitter", "search", "habit tracker", "--limit", "20"]]
+    assert found.shutdowns == [("Our team habit app is shutting down", "https://x.com/a/1")]
+    assert [(c.text, c.source) for c in found.complaints] == [
+        ("Every team habit tracker is too expensive.", "X/Twitter")
+    ]
+
+
+def test_agent_reach_login_problem_is_noted_not_fatal(web):
+    bad = agentreach.source("linkedin", runner=lambda args: json.dumps({"ok": False, "error": {"code": "NEED_LOGIN"}}))
+    with httpx.Client() as c:
+        x = xray.run(IDEA, c, sources={"LinkedIn (Agent-Reach)": bad}, use_ai=False, now=NOW)
+    assert any("LinkedIn (Agent-Reach) could not be searched" in n for n in x.notes)
+
+
+def test_reach_flag_needs_agent_reach_installed(monkeypatch):
+    monkeypatch.setattr(agentreach, "installed", lambda: False)
+    with pytest.raises(SystemExit, match="pip install agent-reach"):
+        main(["idea", "--reach", "twitter"])

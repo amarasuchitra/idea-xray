@@ -4,11 +4,12 @@
 
 Most startups fail because nobody needed what they built. In [CB Insights' study](https://www.launchrock.com/library/expert-advice/why-do-startups-fail) of 101 failed startups, 42% gave "no market need" as a reason. Idea X-ray checks an idea against real, linked evidence in a few minutes:
 
-1. **What already exists.** It searches Hacker News, GitHub, the App Store and Reddit for products doing the same job. Each one is marked 🟢 **Live and used**, 🟡 **Prototype nobody uses**, or 🪦 **In the graveyard**, with the evidence (ratings, stars, last update, a shutdown post).
+1. **What already exists.** It searches Hacker News, GitHub, the App Store, Reddit and Y Combinator's company directory for products doing the same job. Each one is marked 🟢 **Live and used**, 🟡 **Prototype nobody uses**, or 🪦 **In the graveyard**, with the evidence (ratings, stars, last update, a shutdown post).
 2. **Where they fall short.** It pulls real user complaints and groups them into gaps: price, reliability, missing features, ease of use, privacy, support, and platform or legal limits. Each gap is marked fixable or hard to fix, with a profit angle.
 3. **A durability score out of 100.** It has five parts (demand evidence, room to win, competition, graveyard warning, platform risk), and every point shows the evidence behind it.
 4. **A devil's advocate.** You get the strongest reasons the idea could fail. Built-in rules always work, and a free AI model gives a sharper version if you add a key.
-5. **A next step.** Go, rethink or stop. If it's go, set a pass mark *before* testing with real people.
+5. **The graveyard.** YC companies marked Inactive show up as dead competitors, and the report links searches on [Loot Drop](https://www.loot-drop.io), [Startups.RIP](https://startups.rip) and [Failory](https://www.failory.com/cemetery) so you can read *why* similar startups died.
+6. **A next step.** Go, rethink or stop. If it's go, set a pass mark *before* testing with real people.
 
 See a [sample report](examples/sample-report.md) (made from test data).
 
@@ -34,7 +35,7 @@ Good keywords matter most. Use the words your customers would type, not your pro
 
 ## Free by default
 
-All four sources are free and need no key. A `GITHUB_TOKEN` raises GitHub's search limit.
+All five sources are free and need no key. A `GITHUB_TOKEN` raises GitHub's search limit.
 
 The devil's advocate uses built-in rules unless you add a key for any of these free tiers. When one runs out for the day, the next one is tried:
 
@@ -48,12 +49,34 @@ The devil's advocate uses built-in rules unless you add a key for any of these f
 
 Free limits and model names change often. Override a model with `IDEA_XRAY_<PROVIDER>_MODEL`, for example `IDEA_XRAY_GROQ_MODEL`. Use your own accounts: shared or leaked keys break the providers' terms and get banned. Use `--no-ai` to force the rules.
 
+## Startup graveyards
+
+| Graveyard | What it has | How Idea X-ray uses it |
+|---|---|---|
+| YC directory (via [yc-oss](https://github.com/yc-oss/api)) | Every launched YC company, with Active, Inactive, Acquired or Public | Searched directly. Inactive companies count as dead competitors |
+| [Startups.RIP](https://startups.rip) | Post-mortems and rebuild plans for 1,700+ inactive YC companies | Linked search in the report |
+| [Loot Drop](https://www.loot-drop.io) | 1,200+ dead startups with money burned, cause of death and rebuild plans | Linked search in the report |
+| [Failory](https://www.failory.com/cemetery) | Founder interviews and a startup cemetery | Linked search in the report |
+
+Loot Drop, Startups.RIP and Failory have no public API or reuse license, so Idea X-ray links to them instead of copying their pages. Much of their writing is AI-assisted, so check facts before relying on them.
+
+## More platforms with Agent-Reach (optional)
+
+[Agent-Reach](https://github.com/Panniantong/Agent-Reach) can search X/Twitter, LinkedIn, YouTube and logged-in Reddit, which have no free API. Install it on your own computer and add `--reach`:
+
+```bash
+pip install agent-reach && agent-reach setup
+idea-xray "..." --keyword "habit tracker" --reach twitter --reach linkedin --reach youtube
+```
+
+Their posts become complaints and shutdown stories, like the other sources. A channel that needs a login is skipped and listed in the report's limits. Use a secondary account: logged-in scraping can break a site's terms and get the account blocked, so never run `--reach` in shared CI.
+
 ## Be honest with yourself
 
 - **The score is not a prediction.** It shows how strong the evidence is today. Only real people signing up or paying can prove an idea.
 - **"Nothing found" is not good news by default.** It can mean a fresh chance, or that nobody wants this.
 - **A crowded market proves demand.** A graveyard full of similar products is a warning, and its shutdown posts are free lessons.
-- **Search is not the whole world.** It misses products outside these four sources, and it can't see private revenue. Check the links yourself.
+- **Search is not the whole world.** It misses products outside these sources, and it can't see private revenue. Check the links yourself.
 - **Complaint text is written by strangers.** It is treated as data. The AI is told never to follow instructions inside it.
 
 ## How it works
@@ -63,7 +86,9 @@ idea + keywords
    ├─ sources/hackernews.py  launches (Show HN), shutdown posts, complaints in comments
    ├─ sources/github.py      open-source attempts: stars, last push, archived
    ├─ sources/appstore.py    apps: ratings, last version date
-   └─ sources/reddit.py      complaints, "alternative to" posts, shutdown posts
+   ├─ sources/reddit.py      complaints, "alternative to" posts, shutdown posts
+   ├─ sources/yc.py          YC companies: active, acquired or Inactive (dead)
+   └─ sources/agentreach.py  optional: X/Twitter, LinkedIn, YouTube through Agent-Reach
 liveness.py   live / prototype / graveyard rules (18 months without an update = abandoned)
 gaps.py       complaints → themed gaps, fixable or not, profit angle
 score.py      durability score parts + rule-based devil's advocate

@@ -19,6 +19,9 @@ def classify(p: Product, shutdowns: list[tuple[str, str]], now: datetime | None 
     now = now or datetime.now(UTC)
     unit = UNIT.get(p.source, "users")
     short = p.name.split("/")[-1].lower()
+    if p.dead:
+        p.status, p.why = Status.graveyard, p.dead
+        return p
     for title, url in shutdowns:
         if len(short) >= 4 and short in title.lower():
             p.status, p.why, p.shutdown_note = Status.graveyard, f'shutdown post: "{title}"', url
@@ -34,7 +37,7 @@ def classify(p: Product, shutdowns: list[tuple[str, str]], now: datetime | None 
         p.status, p.why = Status.prototype, f"only {p.users} {unit}"
         return p
     p.status = Status.live
-    p.why = f"{p.users:,} {unit}" if p.users is not None else "active"
+    p.why = p.why or (f"{p.users:,} {unit}" if p.users is not None else "active")
     if p.last_activity and p.source != "Hacker News":
         p.why += f", updated {_date(p.last_activity)}"
     return p
