@@ -1,11 +1,11 @@
 import json
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 
 import httpx
 import pytest
 import respx
 
-from idea_xray import llm, xray
+from idea_xray import demand, llm, xray
 from idea_xray.cli import main
 from idea_xray.gaps import find_gaps, theme_of
 from idea_xray.liveness import classify
@@ -179,3 +179,36 @@ def test_reach_flag_needs_agent_reach_installed(monkeypatch):
     monkeypatch.setattr(agentreach, "installed", lambda: False)
     with pytest.raises(SystemExit, match="pip install agent-reach"):
         main(["idea", "--reach", "twitter"])
+
+
+def test_demand_page_promises_only_what_the_evidence_shows(web):
+    x = xr()
+    html = demand.page(x, "https://formspree.io/f/abc")
+    assert '<form action="https://formspree.io/f/abc" method="POST">' in html
+    assert "I would pay $4 per user per month" in html and "For remote team leads" in html
+    for title, _, n in demand.promises(x):
+        assert title in html and f"Found in {n} real complaint" in html
+    assert "Connect a form service" not in html
+    assert "Connect a form service" in demand.page(x)  # no form yet: warn instead of silently dropping emails
+
+
+def test_demand_page_escapes_the_pitch_and_rejects_unsafe_form_urls(web):
+    x = xr()
+    x.idea.pitch = "<script>alert(1)</script> tracker"
+    assert "<script>alert" not in demand.page(x)
+    with pytest.raises(ValueError):
+        demand.page(x, "javascript:alert(1)")
+
+
+def test_test_plan_fixes_the_pass_mark_before_starting(web):
+    body = demand.plan(xr(), demand.Test(signups=50, days=10, start=date(2026, 11, 1)))
+    assert "**Goal:** 50 waitlist signups" in body and "01 Nov 2026 to 11 Nov 2026" in body
+    assert "Don't build yet" in body
+
+
+def test_cli_writes_the_demand_test(web, tmp_path):
+    folder = tmp_path / "test"
+    args = ["A habit tracker for remote teams", "--keyword", "habit tracker", "--no-ai", "--price", "$4"]
+    assert main([*args, "--page", str(folder), "--goal", "30"]) == 0
+    assert "I would pay $4" in (folder / "index.html").read_text()
+    assert "**Goal:** 30 waitlist signups" in (folder / "TEST-PLAN.md").read_text()

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A habit tracker for remote teams with Slack nudges</title>
+<meta name="description" content="A habit tracker for remote teams with Slack nudges">
+<style>
+:root { --bg:#fbfaf7; --fg:#1c1b19; --muted:#5f5b53; --card:#fff; --line:#e6e1d8; --accent:#2f5d50; --on:#fff; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#151513; --fg:#ecebe6; --muted:#a8a49b; --card:#1f1e1b; --line:#33312c;
+    --accent:#7fc4ad; --on:#10201b; }
+}
+* { box-sizing:border-box }
+body { margin:0; background:var(--bg); color:var(--fg); font:17px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif }
+main { max-width:720px; margin:0 auto; padding:64px 16px }
+h1 { font-size:clamp(28px,6vw,44px); line-height:1.15; margin:0 0 12px }
+.who { color:var(--muted); font-size:19px; margin:0 0 32px }
+ul { list-style:none; padding:0; display:grid; gap:12px; margin:0 0 32px }
+li { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 20px }
+h3 { margin:0 0 4px; font-size:18px } li p { margin:0 }
+.ev { color:var(--muted); font-size:14px; margin-top:6px }
+form { display:flex; flex-wrap:wrap; gap:8px; align-items:center }
+input[type=email] { flex:1 1 240px; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+  background:var(--card); color:var(--fg); font:inherit }
+button { padding:12px 20px; border:0; border-radius:8px; background:var(--accent); color:var(--on); font:inherit;
+  font-weight:600; cursor:pointer }
+.pay { flex-basis:100%; color:var(--muted); font-size:15px }
+.price { margin:0 0 12px } .warn { color:#b3261e; font-weight:600 }
+footer { margin-top:48px; color:var(--muted); font-size:13px } a { color:var(--accent) }
+</style>
+</head>
+<body>
+<main>
+<h1>A habit tracker for remote teams with Slack nudges</h1>
+<p class="who">For remote team leads</p>
+<ul><li><h3>Fair, simple pricing</h3><p>Existing tools charge too much for what you get.</p><p class="ev">Found in 2 real complaints.</p></li><li><h3>Does what the others skip</h3><p>Existing tools leave out what people keep asking for.</p><p class="ev">Found in 2 real complaints.</p></li><li><h3>Works every time</h3><p>Existing tools crash, lose data or slow down.</p><p class="ev">Found in 1 real complaint.</p></li></ul>
+<p class="price">Planned price: <strong>$4 per user per month</strong></p>
+<form action="https://formspree.io/f/your-form-id" method="POST">
+<input type="email" name="email" required placeholder="you@example.com" aria-label="Email address">
+<button type="submit">Join the waitlist</button>
+<label class="pay"><input type="checkbox" name="would_pay" value="yes"> I would pay $4 per user per month</label>
+</form>
+
+<footer>We're testing whether to build this. We'll only email you about it. ·
+Made with <a href="https://github.com/amarasuchitra/idea-xray">Idea X-ray</a></footer>
+</main>
+</body>
+</html>

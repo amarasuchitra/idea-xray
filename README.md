@@ -9,7 +9,7 @@ Most startups fail because nobody needed what they built. In [CB Insights' study
 3. **A durability score out of 100.** It has five parts (demand evidence, room to win, competition, graveyard warning, platform risk), and every point shows the evidence behind it.
 4. **A devil's advocate.** You get the strongest reasons the idea could fail. Built-in rules always work, and a free AI model gives a sharper version if you add a key.
 5. **The graveyard.** YC companies marked Inactive show up as dead competitors, and the report links searches on [Loot Drop](https://www.loot-drop.io), [Startups.RIP](https://startups.rip) and [Failory](https://www.failory.com/cemetery) so you can read *why* similar startups died.
-6. **A next step.** Go, rethink or stop. If it's go, set a pass mark *before* testing with real people.
+6. **A demand test.** Go, rethink or stop. If it's go, `--page` writes a waitlist page and a test plan with a pass mark you set *before* anyone sees it.
 
 See a [sample report](examples/sample-report.md) (made from test data).
 
@@ -32,6 +32,21 @@ keywords: [habit tracker, team habits]
 ```
 
 Good keywords matter most. Use the words your customers would type, not your product name.
+
+## Test real demand (stage 3)
+
+A score is evidence, not proof. Only real people signing up can prove an idea. Add `--page` and Idea X-ray also writes a one-page waitlist site and a test plan:
+
+```bash
+idea-xray "A habit tracker for remote teams with Slack nudges" --keyword "habit tracker" \
+  --customer "remote team leads" --price "\$4 per user per month" \
+  --page demand-test --form https://formspree.io/f/your-form-id --goal 100 --days 14
+```
+
+- **`index.html`** promises only what the X-ray found: each fixable gap becomes one line, with how many real complaints back it. It has a waitlist form and an "I would pay" tick box, which is a stronger signal than an email. It works on phones and in dark mode, with no other files.
+- **`TEST-PLAN.md`** fixes the pass mark and dates *before* anyone sees the page, and says what to do if you hit it or miss it.
+
+Collect emails with any free form service (Formspree, Basin, Tally) and host the page free on GitHub Pages. See the [sample page](examples/demand-test/index.html) and [plan](examples/demand-test/TEST-PLAN.md).
 
 ## Free by default
 
@@ -94,6 +109,7 @@ gaps.py       complaints → themed gaps, fixable or not, profit angle
 score.py      durability score parts + rule-based devil's advocate
 llm.py        optional AI devil's advocate with free-provider fallback
 report.py     the Markdown report
+demand.py     stage 3: waitlist page and test plan
 ```
 
 A source that fails is skipped and listed under "Limits of this report", so one outage never stops the X-ray.
@@ -109,7 +125,13 @@ Tests run against recorded API responses in `tests/fixtures`, so they need no ne
 
 ## Part of a bigger flow
 
-Idea X-ray is stages 1 and 2 of a five-stage flow for taking a startup from idea to a product that lasts: check the idea, find the gaps, plan with the harsh realities, get advice and a team, then build, launch and keep improving. Next up is the real demand test: a landing page with a waitlist and a pass mark you set before you start.
+Idea X-ray covers the first three stages of a five-stage flow for taking a startup from idea to a product that lasts:
+
+1. Check the idea: what exists, what's alive, what died ✅
+2. Find the gaps worth building on ✅
+3. Test real demand with a waitlist and a pass mark ✅
+4. Plan with the harsh realities, and get advice and a team (next)
+5. Build, launch and keep improving
 
 ## License
 
