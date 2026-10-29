@@ -1,19 +1,44 @@
 # 🩻 Idea X-ray
 
-**Before you spend months building a startup idea, find out who already tried it, who's still alive, who died, and what their users complain about.**
+**Will your startup idea survive? Find out who already tried it, who's still alive, who died and what their users complain about, then go from first test to launch with a plan built on that evidence.**
 
-Most startups fail because nobody needed what they built. In [CB Insights' study](https://www.launchrock.com/library/expert-advice/why-do-startups-fail) of 101 failed startups, 42% gave "no market need" as a reason. Idea X-ray checks an idea against real, linked evidence in a few minutes:
+Most startups fail because nobody needed what they built. In [CB Insights' study](https://www.launchrock.com/library/expert-advice/why-do-startups-fail) of 101 failed startups, 42% gave "no market need" as a reason. Other tools stop at a score. Idea X-ray is free, open source, links every claim to its evidence, and walks you through all five stages:
 
-1. **What already exists.** It searches Hacker News, GitHub, the App Store, Reddit and Y Combinator's company directory for products doing the same job. Each one is marked 🟢 **Live and used**, 🟡 **Prototype nobody uses**, or 🪦 **In the graveyard**, with the evidence (ratings, stars, last update, a shutdown post).
-2. **Where they fall short.** It pulls real user complaints and groups them into gaps: price, reliability, missing features, ease of use, privacy, support, and platform or legal limits. Each gap is marked fixable or hard to fix, with a profit angle.
-3. **A durability score out of 100.** It has five parts (demand evidence, room to win, competition, graveyard warning, platform risk), and every point shows the evidence behind it.
-4. **A devil's advocate.** You get the strongest reasons the idea could fail. Built-in rules always work, and a free AI model gives a sharper version if you add a key.
-5. **The graveyard.** YC companies marked Inactive show up as dead competitors, and the report links searches on [Loot Drop](https://www.loot-drop.io), [Startups.RIP](https://startups.rip) and [Failory](https://www.failory.com/cemetery) so you can read *why* similar startups died.
-6. **A demand test.** Go, rethink or stop. If it's go, `--page` writes a waitlist page and a test plan with a pass mark you set *before* anyone sees it.
+| Stage | What you get |
+|---|---|
+| **1. Check the idea** | Similar products from Hacker News, GitHub, the App Store, Reddit and Y Combinator, each marked 🟢 live, 🟡 prototype or 🪦 dead, with evidence. Links to the startup graveyards (Loot Drop, Startups.RIP, Failory). A durability score out of 100 and a devil's advocate. |
+| **2. Find the gaps** | Real user complaints grouped into gaps (price, reliability, missing features…), each marked fixable or not, with a profit angle. |
+| **3. Test demand** | A ready-to-publish waitlist page that promises only what the evidence shows, plus a test plan with a pass mark you set *before* anyone sees it. |
+| **4. Plan and get help** | What to build first, profit maths from your price, costs, risks with what to do, harsh realities, upkeep. Ready-to-post asks for expert reviews and co-builders. |
+| **5. Launch and improve** | A launch checklist, a weekly feedback loop, and a competitor watch that tells you when someone new appears or a rival dies. |
 
-See a [sample report](examples/sample-report.md) (made from test data).
+See a [sample kit](examples/kit/) built from test data.
 
-## Run it
+![The Idea X-ray web app](docs/web-form.png)
+
+## Try it
+
+**Online, free:** https://amarasuchitra.github.io/idea-xray/ runs everything in your browser. Nothing to install, and your idea goes only to the public search sites.
+
+**On your computer:**
+
+```bash
+pip install git+https://github.com/amarasuchitra/idea-xray
+idea-xray serve
+```
+
+Open http://localhost:8000, describe your idea, and get every stage in tabs. Preview the waitlist page, or download the whole kit as a zip.
+
+<details><summary>What a result looks like (made from test data)</summary>
+
+![The build plan tab](docs/web-build-plan.png)
+![A generated waitlist page](docs/waitlist-page.png)
+
+</details>
+
+To host it for others, use the included `Dockerfile` on any Docker host. Set AI keys as the host's secrets.
+
+## Or use the command line
 
 ```bash
 pip install git+https://github.com/amarasuchitra/idea-xray
@@ -33,6 +58,21 @@ keywords: [habit tracker, team habits]
 
 Good keywords matter most. Use the words your customers would type, not your product name.
 
+Add `--kit my-idea` to write every stage as files:
+
+```
+my-idea/
+  1-xray-report.md           stage 1 and 2: what exists, what died, the gaps, the score
+  2-demand-test/index.html   stage 3: the waitlist page
+  2-demand-test/TEST-PLAN.md stage 3: the pass mark and dates
+  3-build-plan.md            stage 4: scope, profit maths, costs, risks, harsh realities
+  4-ask-for-help.md          stage 4: posts asking for reviews and co-builders
+  5-launch.md                stage 5: launch checklist and feedback loop
+  xray.json                  stage 5: a snapshot to compare with next time
+```
+
+`--target 2000` sets the monthly income the build plan works towards.
+
 ## Test real demand (stage 3)
 
 A score is evidence, not proof. Only real people signing up can prove an idea. Add `--page` and Idea X-ray also writes a one-page waitlist site and a test plan:
@@ -46,7 +86,20 @@ idea-xray "A habit tracker for remote teams with Slack nudges" --keyword "habit 
 - **`index.html`** promises only what the X-ray found: each fixable gap becomes one line, with how many real complaints back it. It has a waitlist form and an "I would pay" tick box, which is a stronger signal than an email. It works on phones and in dark mode, with no other files.
 - **`TEST-PLAN.md`** fixes the pass mark and dates *before* anyone sees the page, and says what to do if you hit it or miss it.
 
-Collect emails with any free form service (Formspree, Basin, Tally) and host the page free on GitHub Pages. See the [sample page](examples/demand-test/index.html) and [plan](examples/demand-test/TEST-PLAN.md).
+Collect emails with any free form service (Formspree, Basin, Tally) and host the page free on GitHub Pages. See the [sample page](examples/kit/2-demand-test/index.html) and [plan](examples/kit/2-demand-test/TEST-PLAN.md).
+
+## Advice and a team (stage 4)
+
+Post your X-ray in [Discussions](https://github.com/amarasuchitra/idea-xray/discussions) using the **Idea review** or **Looking for team** form. Founders review each other's evidence, and builders find projects that already have proof of demand.
+
+## Watch your competitors (stage 5)
+
+```bash
+idea-xray --file idea.yaml --save xray.json          # first time
+idea-xray --file idea.yaml --compare xray.json       # later: what changed?
+```
+
+It lists new competitors, ones that died, and complaint themes that grew. `5-launch.md` includes a GitHub Actions workflow that runs this every Monday and opens an issue when something changed.
 
 ## Free by default
 
@@ -110,6 +163,13 @@ score.py      durability score parts + rule-based devil's advocate
 llm.py        optional AI devil's advocate with free-provider fallback
 report.py     the Markdown report
 demand.py     stage 3: waitlist page and test plan
+plan.py       stage 4: scope, profit maths, costs, risks, harsh realities
+community.py  stage 4: asks for reviews and co-builders, and where to post them
+launch.py     stage 5: launch checklist and the competitor-watch workflow
+watch.py      stage 5: snapshots and what changed
+kit.py        every stage as files, or one zip
+web.py        the local web app (idea-xray serve)
+browser.py    the same flow inside a web page (site/, built by scripts/build_site.sh)
 ```
 
 A source that fails is skipped and listed under "Limits of this report", so one outage never stops the X-ray.
@@ -123,15 +183,9 @@ ruff check . && ruff format --check . && pytest -q
 
 Tests run against recorded API responses in `tests/fixtures`, so they need no network.
 
-## Part of a bigger flow
+## Related
 
-Idea X-ray covers the first three stages of a five-stage flow for taking a startup from idea to a product that lasts:
-
-1. Check the idea: what exists, what's alive, what died ✅
-2. Find the gaps worth building on ✅
-3. Test real demand with a waitlist and a pass mark ✅
-4. Plan with the harsh realities, and get advice and a team (next)
-5. Build, launch and keep improving
+[CI Doctor](https://github.com/amarasuchitra/ci-doctor) keeps your build honest after launch: it explains CI failures and flags "fixes" that only hide them.
 
 ## License
 

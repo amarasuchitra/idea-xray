@@ -1,4 +1,4 @@
-<!-- Built from the made-up test data in tests/fixtures. -->
+<!-- Sample only: built from the made-up test data in tests/fixtures. -->
 
 # Demand test plan
 

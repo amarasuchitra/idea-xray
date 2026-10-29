@@ -1,0 +1,24 @@
+title: "[Team] "
+labels: ["looking for team"]
+body:
+  - type: textarea
+    id: building
+    attributes:
+      label: What you're building, and the evidence so far
+      description: Link your X-ray and demand test result. Evidence gets people to join.
+    validations:
+      required: true
+  - type: input
+    id: roles
+    attributes:
+      label: Who you need
+      placeholder: a developer, a designer, someone who knows the customers
+    validations:
+      required: true
+  - type: textarea
+    id: terms
+    attributes:
+      label: Time and split
+      description: Hours per week, and equity or pay. Say it up front. Never ask for free work on a vague promise.
+    validations:
+      required: true
