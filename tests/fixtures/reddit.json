@@ -1,0 +1,27 @@
+{
+ "data": {
+  "children": [
+   {
+    "data": {
+     "title": "Looking for an alternative to Streaks for my team",
+     "selftext": "Streaks doesn't support shared goals. The subscription price is too much for small teams.",
+     "permalink": "/r/productivity/comments/abc/"
+    }
+   },
+   {
+    "data": {
+     "title": "My morning routine",
+     "selftext": "Coffee, walk, read.",
+     "permalink": "/r/productivity/comments/def/"
+    }
+   },
+   {
+    "data": {
+     "title": "Apple won't allow background reminders like this",
+     "selftext": "So every habit app is limited by iOS rules.",
+     "permalink": "/r/iOSProgramming/comments/ghi/"
+    }
+   }
+  ]
+ }
+}

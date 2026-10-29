@@ -1,0 +1,28 @@
+{
+ "items": [
+  {
+   "full_name": "acme/habit-tracker",
+   "html_url": "https://github.com/acme/habit-tracker",
+   "description": "Habit tracker",
+   "stargazers_count": 2400,
+   "pushed_at": "2026-10-01T00:00:00Z",
+   "archived": false
+  },
+  {
+   "full_name": "old/habithub",
+   "html_url": "https://github.com/old/habithub",
+   "description": "HabitHub server",
+   "stargazers_count": 900,
+   "pushed_at": "2023-02-01T00:00:00Z",
+   "archived": true
+  },
+  {
+   "full_name": "me/habits",
+   "html_url": "https://github.com/me/habits",
+   "description": "my habits",
+   "stargazers_count": 3,
+   "pushed_at": "2026-09-01T00:00:00Z",
+   "archived": false
+  }
+ ]
+}

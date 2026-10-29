@@ -1,0 +1,32 @@
+{
+ "hits": [
+  {
+   "objectID": "101",
+   "title": "Show HN: Streakly \u2013 habit tracker for remote teams",
+   "url": "https://streakly.example",
+   "points": 142,
+   "created_at": "2025-03-01T10:00:00Z"
+  },
+  {
+   "objectID": "102",
+   "title": "Show HN: TeamHabits, a tiny habit app",
+   "url": "https://teamhabits.example",
+   "points": 4,
+   "created_at": "2026-05-01T10:00:00Z"
+  },
+  {
+   "objectID": "103",
+   "title": "HabitHub is shutting down",
+   "url": "https://habithub.example/bye",
+   "points": 80,
+   "created_at": "2024-01-10T10:00:00Z"
+  },
+  {
+   "objectID": "104",
+   "title": "Ask HN: How do you build habits?",
+   "url": null,
+   "points": 30,
+   "created_at": "2025-01-10T10:00:00Z"
+  }
+ ]
+}
