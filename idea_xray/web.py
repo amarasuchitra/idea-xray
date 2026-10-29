@@ -14,10 +14,9 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs
 
-import markdown as md
-
 from . import PROJECT_URL, demand, kit, xray
 from .cli import client
+from .htmlrender import render
 from .models import Idea
 
 STAGES = [
@@ -27,16 +26,8 @@ STAGES = [
     ("4-ask-for-help.md", "4. Advice and team"),
     ("5-launch.md", "5. Launch and improve"),
 ]
-ALLOWED_TAGS = re.compile(r"<(?!/?(details|summary|sub)>|!--)")
-UNSAFE_HREF = re.compile(r'href="(?!https?://|#)[^"]*"')
 MAX_KEPT = 200  # results kept in memory; the oldest are dropped
 results: OrderedDict[str, dict[str, str]] = OrderedDict()
-
-
-def render(text: str) -> str:
-    """Markdown to HTML. Text from strangers (complaints, product names) can't inject tags or script links."""
-    out = md.markdown(ALLOWED_TAGS.sub("&lt;", text), extensions=["tables", "fenced_code"])
-    return UNSAFE_HREF.sub('href="#"', out)
 
 
 STYLE = """

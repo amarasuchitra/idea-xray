@@ -16,7 +16,11 @@ See a [sample kit](examples/kit/) built from test data.
 
 ![The Idea X-ray web app](docs/web-form.png)
 
-## Try it in your browser
+## Try it
+
+**Online, free:** https://amarasuchitra.github.io/idea-xray/ runs everything in your browser. Nothing to install, and your idea goes only to the public search sites.
+
+**On your computer:**
 
 ```bash
 pip install git+https://github.com/amarasuchitra/idea-xray
@@ -164,7 +168,8 @@ community.py  stage 4: asks for reviews and co-builders, and where to post them
 launch.py     stage 5: launch checklist and the competitor-watch workflow
 watch.py      stage 5: snapshots and what changed
 kit.py        every stage as files, or one zip
-web.py        the browser app (idea-xray serve)
+web.py        the local web app (idea-xray serve)
+browser.py    the same flow inside a web page (site/, built by scripts/build_site.sh)
 ```
 
 A source that fails is skipped and listed under "Limits of this report", so one outage never stops the X-ray.
